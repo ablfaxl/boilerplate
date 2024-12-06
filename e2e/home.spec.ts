@@ -1,28 +1,27 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Home Page', () => {
-  const webLink = 'http://localhost:3000';
+test('Home page renders correctly', async ({ page }) => {
+  // Navigate to the Home page
+  await page.goto('http://localhost:3000'); // Adjust the URL based on your local development server
 
-  // Test to check if the Next.js logo is visible
-  test('should display the Next.js logo', async ({ page }) => {
-    await page.goto(webLink); // Navigate to the home page
+  // Ensure the Title is visible
+  const title = page.locator('h1');
+  await expect(title).toHaveText('Welcome to Ablfaxl Boilerplate');
+  await expect(title).toBeVisible();
 
-    // Check if the Next.js logo is visible
-    const logo = page.locator('img[alt="Next.js logo"]');
-    await expect(logo).toBeVisible();
-  });
+  // Ensure the button is visible with the correct label
+  const githubButton = page.locator('button:has-text("Github")');
+  await expect(githubButton).toBeVisible();
 
-  // Test to check the "Deploy now" button's href attribute
-  test('should display the deployment link', async ({ page }) => {
-    await page.goto(webLink);
+  // Ensure the button contains the correct GitHub icon
+  const githubIcon = githubButton.locator('svg');
+  await expect(githubIcon).toBeVisible();
 
-    // Check for the "Deploy now" button
-    const deployLink = page.locator('a:has-text("Deploy now")');
-    await expect(deployLink).toHaveAttribute('href', /vercel.com\/new/);
-  });
+  // Ensure clicking the button opens the correct GitHub link in a new tab
+  const [newTab] = await Promise.all([
+    page.waitForEvent('popup'), // Wait for new tab to open
+    githubButton.click(), // Click the GitHub button
+  ]);
 
-  // Test to check the "Read our docs" button navigation
-  // If you want to test a local URL, you could change your link in the component to:
-  // href="/docs" and then use the following line:
-  // await expect(page).toHaveURL(/\/docs/);
+  await newTab.waitForURL('https://github.com/ablfaxl'); // Ensure the new tab's URL is correct
 });
