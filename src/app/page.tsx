@@ -1,9 +1,9 @@
 'use client';
-import React from 'react';
-import { Flex, Layout, Typography } from 'antd';
 import { Button } from '@/app/_ui/button/button';
 import { GithubOutlined } from '@ant-design/icons';
+import { Flex, Layout, Typography } from 'antd';
 import Link from 'next/link';
+import React from 'react';
 
 const layoutStyle: React.CSSProperties = {
   borderRadius: 8,
@@ -18,7 +18,7 @@ const layoutStyle: React.CSSProperties = {
 
 export default function Home() {
   return (
-    <Flex gap="large" wrap>
+    <Flex gap="large" wrap align="center">
       <Layout style={layoutStyle}>
         <Typography.Title level={1}>
           Welcome to Ablfaxl Boilerplate
